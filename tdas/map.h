@@ -6,7 +6,15 @@ typedef struct MapPair {
     void *value;
 } MapPair;
 
-typedef struct Map Map;
+typedef struct {
+    List **buckets;
+    int capacity;
+    int size;
+    int (*is_equal)(void *, void *);
+    unsigned (*hash)(void *);
+    int current_bucket;
+    void *current_node;
+}Map;
 
 Map *map_create(int (*is_equal)(void *, void *), unsigned (*hash)(void *));
 void map_insert(Map *map, void *key, void *value);

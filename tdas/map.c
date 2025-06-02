@@ -5,16 +5,6 @@
 
 #define INITIAL_CAPACITY 103  // Número primo para menor colisión
 
-struct Map {
-    List **buckets;
-    int capacity;
-    int size;
-    int (*is_equal)(void *, void *);
-    unsigned (*hash)(void *);
-    int current_bucket;
-    void *current_node;
-};
-
 Map *map_create(int (*is_equal)(void *, void *), unsigned (*hash)(void *)) {
     Map *map = malloc(sizeof(Map));
     map->capacity = INITIAL_CAPACITY;

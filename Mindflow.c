@@ -15,7 +15,7 @@
 
 //structuras propuestas
 typedef struct {
-    List cursos;
+    Map cursos; //usar de key el nombre y de value la estructura curso
     Mes meses[12];
 } Estudiante;
 
@@ -30,13 +30,21 @@ typedef struct {
 //Dia
 typedef struct {
     int numero; //numero del dia
-    bool relevante[3]; //0=examen, 1=control, 2=trabajo
+    bool relevante[3]; //0=examen, 1=control, 2=trabajo, con esto en un mismo dia podemos saber que hay mas facil
     List agenda; //lista de eventos del dia
 } Dia;
+
+//agenda
+typedef struct {
+    char nombre[50]; //nombre del evento
+    char descripcion[100]; //descripcion del evento
+    bool estado; //false= pendiente, true= realizado
+} Agenda;
 
 //Estructura relacionadas a los cursos
 //Curso
 typedef struct {
+    int id; //asignar automatico, usarlo para acceder mas facil 
     char nombre[50];
     List notas; //usar estructura Nota
     List repaso; //usar estructura Repaso y usar cada nodo como para un examen
