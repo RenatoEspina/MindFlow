@@ -5,16 +5,17 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tdas/list.h>
-#include <tdas/map.h>
+#include "extra.h"
+#include "map.h"
 
 //estructuras propuestas
-typedef struct Estudiante{
-    Map* cursos; //usar de key el nombre y de value la estructura curso
-    Mes meses[12];
-} Estudiante;
+//Dia
+typedef struct Dia{
+    int numero; //numero del dia en la semana
+    bool relevante[3]; //0=examen, 1=control, 2=trabajo, con esto en un mismo dia podemos saber que hay mas facil
+    List* agenda; //lista de eventos del dia
+} Dia;
 
-//Estructura relacionadas al calendario de pruebas y agenda
 //Mes
 typedef struct Mes{
     char nombre[20];
@@ -22,12 +23,11 @@ typedef struct Mes{
     Dia dias[31]; //arreglo de dias, maximo 31 dias
 } Mes;
 
-//Dia
-typedef struct Dia{
-    int numero; //numero del dia en la semana
-    bool relevante[3]; //0=examen, 1=control, 2=trabajo, con esto en un mismo dia podemos saber que hay mas facil
-    List* agenda; //lista de eventos del dia
-} Dia;
+//estudiante
+typedef struct Estudiante{
+    Map* cursos; //usar de key el nombre y de value la estructura curso
+    Mes meses[12];
+} Estudiante;
 
 //agenda
 typedef struct Agenda{

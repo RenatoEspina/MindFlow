@@ -1,6 +1,6 @@
 #ifndef MAP_H
 #define MAP_H
-
+#include "list.h"
 typedef struct MapPair {
     void *key;
     void *value;
