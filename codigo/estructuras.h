@@ -1,3 +1,6 @@
+#ifndef ESTRUCTURAS_H
+#define ESTRUCTURAS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +16,7 @@
 #include <tdas/set.h>
 #include <tdas/stack.h>
 
-//structuras propuestas
+//estructuras propuestas
 typedef struct {
     Map cursos; //usar de key el nombre y de value la estructura curso
     Mes meses[12];
@@ -70,8 +73,5 @@ typedef struct {
     int puntuacion; //(0-100)
 } Pregunta;
 
-//Main
-int main(){
-    SetConsoleOutputCP(CP_UTF8);
-    return 0;
-}
+
+#endif
