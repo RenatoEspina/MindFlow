@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <time.h>
-#include <windows.h>
-#include "Complementos/extra.h"
-#include "Complementos/list.h"
-#include "Complementos/map.h"
-#include "Complementos/estructuras.h"
-#include "Complementos/equal.h"
+#include "include.h"
 
 void inicializarCurso(Curso *curso, int id){
     curso->id = id; // Asignar un ID automático, podriamos usar el size del map cursos
@@ -124,6 +114,6 @@ int main(){
     struct tm *tm_info = localtime(&t);
     int yearActual = tm_info->tm_year + 1900;
     inicializarEstudiante(&estudiante,yearActual);
-    //imprimirEstudiante(&estudiante);
+    imprimirEstudiante(&estudiante);
     return 0;
 }

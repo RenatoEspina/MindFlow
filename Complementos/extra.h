@@ -52,6 +52,9 @@ List *split_string(const char *str, const char *delim);
 // Función para limpiar la pantalla
 void limpiarPantalla();
 
+// Funcion para limpiar un número específico de líneas en la consola
+void limpiarLineas(int lineas);
+
 void presioneTeclaParaContinuar();
 
 #endif

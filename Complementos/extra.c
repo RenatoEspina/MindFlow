@@ -1,6 +1,5 @@
 #include "extra.h"
 
-
 #define MAX_LINE_LENGTH 4096
 #define MAX_FIELDS      128
 
@@ -87,6 +86,13 @@ void limpiarPantalla() {
     #endif
     }
     
+// Función para limpiar un número específico de líneas en la consola
+void limpiarLineas(int lineas) {
+    for (int i = 0; i < lineas; i++) {
+        printf("\033[F"); // Cursor hacia arriba una línea
+        printf("\033[2K"); // Borra la línea completa
+    }
+}
 
 void presioneTeclaParaContinuar() {
     puts("Presione enter para continuar...");
