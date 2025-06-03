@@ -15,5 +15,5 @@
 #include "Complementos/map.h"
 #include "Complementos/estructuras.h"
 #include "Complementos/equal.h"
-
+#include "Complementos/archivo.h"
 #endif

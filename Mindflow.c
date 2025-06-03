@@ -103,9 +103,8 @@ void imprimirEstudiante(const Estudiante *estudiante) {
     }
     printf("=======================================\n");
 }
-//
 
-//Main
+// Main
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     Estudiante estudiante;
