@@ -50,4 +50,6 @@ void list_sortedInsert(List *L, void *data,int (*lower_than)(void *data1, void *
 
 int list_size(List* L);
 
+void *list_get(List *L, int index);
+
 #endif

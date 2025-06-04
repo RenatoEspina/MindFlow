@@ -51,18 +51,20 @@ typedef struct Nota{
     float ponderacion;
 } Nota;
 
-//repaso
-typedef struct Repaso{
-    List* preguntas; //usar estructura Pregunta
-    int puntuacionPromedio; //puntuacion promedio del repaso
-    int puntuacionPromedioAnterior; //para revisar el avanze o retroceso del estudiante
-} Repaso;
-
 //Pregunta
 typedef struct Pregunta{
     char pregunta[100];
     char respuesta[100];
     int puntuacion; //(0-100)
 } Pregunta;
+
+//repaso
+typedef struct Repaso{
+    Pregunta** preguntas; 
+    int cantidadPreguntas; 
+    int id; //id del repaso
+    int puntuacionPromedio; //puntuacion promedio del repaso
+    int puntuacionPromedioAnterior; //para revisar el avanze o retroceso del estudiante
+} Repaso;
 
 #endif

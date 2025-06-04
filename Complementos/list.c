@@ -184,3 +184,22 @@ void list_clean(List *L) {
     L->current = NULL;
     L->size = 0;
 }
+
+void *list_get(List *L, int index) {
+    if (L == NULL || index < 0 || index >= L->size) {
+        return NULL;  // Índice inválido o lista vacía
+    }
+    
+    Node *current = L->head;
+    int i = 0;
+    while (current != NULL && i < index) {
+        current = current->next;
+        i++;
+    }
+    
+    if (current == NULL) {
+        return NULL; // No debería pasar, pero es una validación extra
+    }
+    
+    return current->data;
+}

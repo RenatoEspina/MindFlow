@@ -1,14 +1,7 @@
-#ifndef EQUAL_H
-#define EQUAL_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include <string.h>
-
-int string_equal(void *a, void *b) {
-    return strcmp((char *)a, (char *)b) == 0;
-}
-
-int int_equal(void *a, void *b) {
-    return *(int *)a == *(int *)b;
-}
+int string_equal(void* a, void* b);
+int int_equal(void* a, void* b);
 
 #endif
