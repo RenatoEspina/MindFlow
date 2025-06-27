@@ -217,7 +217,7 @@ void seleccionarTipodePreguntas(Curso *curso)
     {
         case 1:
 
-            //repasosecuencial(curso);
+            repasosecuencial(curso);
             break;
         case 2:
             //repasoaleatorio(curso);
@@ -229,6 +229,74 @@ void seleccionarTipodePreguntas(Curso *curso)
     }
 
 }
+
+void repasoSecuencial(Curso *curso)
+{
+    printf("===== REPASO SECUENCIAL =====\n");
+
+    // Asegúrate de que el curso tiene repasos y preguntas
+    if (curso->repaso == NULL || list_size(curso->repaso) == 0) {
+        printf("No hay repasos registrados para este curso.\n");
+        return;
+    }
+
+    // Tomamos el primer repaso del curso (si es secuencial)
+    Repaso *repaso = list_first(curso->repaso);
+
+    if (repaso == NULL || repaso->cantidadPreguntas == 0) {
+        printf("Este repaso no tiene preguntas registradas.\n");
+        return;
+    }
+
+    // Mostrar preguntas en orden secuencial
+    for (int i = 0; i < repaso->cantidadPreguntas; i++) {
+        Pregunta *p = repaso->preguntas[i];
+        printf("Pregunta %d: %s\n", i + 1, p->pregunta);
+        printf("Respuesta: %s\n", p->respuesta);
+        printf("Puntuación: %d\n", p->puntuacion);
+        printf("===========================\n");
+    }
+}
+
+void repasoAleatorio(Curso *curso)
+{
+    printf("===== REPASO ALEATORIO =====\n");
+
+    // Verificar si el curso tiene repasos y preguntas
+    if (curso->repaso == NULL || list_size(curso->repaso) == 0) {
+        printf("No hay repasos registrados para este curso.\n");
+        return;
+    }
+
+    // Tomamos el primer repaso del curso
+    Repaso *repaso = list_first(curso->repaso);
+
+    if (repaso == NULL || repaso->cantidadPreguntas == 0) {
+        printf("Este repaso no tiene preguntas registradas.\n");
+        return;
+    }
+
+    // Barajar las preguntas de forma aleatoria usando Fisher-Yates
+    for (int i = repaso->cantidadPreguntas - 1; i > 0; i--) {
+        int j = rand() % (i + 1);  // Seleccionar un índice aleatorio entre 0 e i
+        // Intercambiar las preguntas i y j
+        Pregunta *temp = repaso->preguntas[i];
+        repaso->preguntas[i] = repaso->preguntas[j];
+        repaso->preguntas[j] = temp;
+    }
+
+    // Mostrar las preguntas en orden aleatorio
+    for (int i = 0; i < repaso->cantidadPreguntas; i++) {
+        Pregunta *p = repaso->preguntas[i];
+        printf("Pregunta %d: %s\n", i + 1, p->pregunta);
+        printf("Respuesta: %s\n", p->respuesta);
+        printf("Puntuación: %d\n", p->puntuacion);
+        printf("===========================\n");
+    }
+}
+
+
+
 
 void iniciarrepaso(Estudiante estudiante)
 {
