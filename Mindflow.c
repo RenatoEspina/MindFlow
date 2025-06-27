@@ -167,7 +167,7 @@ void menuCalendario(Estudiante estudiante) {
                 printf("Opción no válida. Intente de nuevo.\n");
                 break;
         }
-    } while (opcionCalendario != 6);
+    } while (opcionCalendario != 4);
 }
 
 void menuprincipal(int *opcion) {
@@ -198,26 +198,29 @@ int main(){
     imprimirEstudiante(&estudiante);
 
     menuprincipal(&opcion);
-    switch (opcion)
-    {
-    case 1:
-        menuCalendario(estudiante);
-        break;
-        
-    case 2:
-        //cursos(estudiante, yearActual);
-        break;
-    case 3:
-        //iniciarrepaso(estudiante, yearActual);
-        break;
-   
-    case 4:
-        printf("saliendo del programa...\n");
-        break;
+    do{
+        switch (opcion)
+        {
+        case 1:
+            menuCalendario(estudiante);
+            break;
+            
+        case 2:
+            //cursos(estudiante, yearActual);
+            break;
+        case 3:
+            //iniciarrepaso(estudiante, yearActual);
+            break;
+    
+        case 4:
+            printf("saliendo del programa...\n");
+            break;
 
-    default:
-        printf("Opción no válida. Por favor, intente de nuevo.\n");
-        break;
-    }
+        default:
+            printf("Opción no válida. Por favor, intente de nuevo.\n");
+            break;
+        }
+        limpiarPantalla();
+    }while(opcion != 4);
     return 0;
 }
