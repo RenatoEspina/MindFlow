@@ -218,7 +218,6 @@ void seleccionarTipodePreguntas(Curso *curso)
     switch (tipopregunta)
     {
         case 1:
-
             repasoSecuencial(curso);
             break;
         case 2:
@@ -227,7 +226,6 @@ void seleccionarTipodePreguntas(Curso *curso)
         default:
             printf("Opción no válida. Por favor, intente de nuevo.\n");
             break;
-
     }
 
 }
