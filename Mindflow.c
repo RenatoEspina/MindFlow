@@ -82,6 +82,16 @@ void calendario(Estudiante estudiante, int yearActual){
 
     printf("Función de calendario no implementada aún.\n");
 }
+void menuprincipal(int *opcion) {
+    printf("===== MENÚ PRINCIPAL =====\n");
+    printf("1. Ver calendario\n");
+    printf("2. Ver cursos\n");
+    printf("3. Iniciar repaso\n");
+    printf("4. Salir\n");
+    printf("\n");
+    printf("Seleccione una opción: ");
+    scanf("%d", &opcion);
+}
 //Main
 int main(){
     int opcion;
@@ -98,19 +108,19 @@ int main(){
     leerPreguntas(&estudiante);
     leerNotas(&estudiante);
     imprimirEstudiante(&estudiante);
-    printf("Ingrese su opcion preferente ");
-    scanf("%d", &opcion);
+
+    menuprincipal(&opcion);
     switch (opcion)
     {
     case 1:
-        calendario(estudiante, yearActual);
+        //calendario(estudiante, yearActual);
         break;
         
     case 2:
-        cursos(estudiante, yearActual);
+        //cursos(estudiante, yearActual);
         break;
     case 3:
-        iniciarrepaso(estudiante, yearActual);
+        //iniciarrepaso(estudiante, yearActual);
         break;
    
     case 4:
