@@ -300,8 +300,30 @@ void repasoAleatorio(Curso *curso)
 
 void iniciarrepaso(Estudiante estudiante)
 {
-    printf("===== INICIAR REPASO =====\n");
-    seleccionarCurso(estudiante);
+    printf("===== REPASO =====\n");
+    printf("1. Seleccionar curso\n");
+    printf("2. agregar preguntas al repaso de un curso\n");
+    printf("3. Volver al menú principal\n");
+    int opcion;
+    printf("Seleccione una opción: ");
+    scanf("%d", &opcion);
+    do{
+    switch (opcion)
+    {
+        case 1:
+            seleccionarCurso(estudiante);
+            break;
+        case 2:
+            //agregarPreguntasRepaso(estudiante);
+            break;
+        case 3:
+            printf("Volviendo al menú principal...\n");
+            return;
+        default:
+            printf("Opción no válida. Por favor, intente de nuevo.\n");
+            return;
+    }
+    } while(opcion != 3);
 
     presioneTeclaParaContinuar();
 }
@@ -311,7 +333,7 @@ void menuprincipal(int *opcion) {
     printf("===== MENÚ PRINCIPAL =====\n");
     printf("1. Ver calendario\n");
     printf("2. Ver cursos\n");
-    printf("3. Iniciar repaso\n");
+    printf("3. Repaso\n");
     printf("4. Salir\n");
     printf("\n");
     printf("Seleccione una opción: ");
