@@ -118,6 +118,7 @@ void imprimirEstudiante(const Estudiante *estudiante) {
 //Main
 int main(){
     SetConsoleOutputCP(CP_UTF8);
+    comprobarExistenciaArchivo();
     Estudiante estudiante;
     //obtener año actual
     time_t t = time(NULL);
