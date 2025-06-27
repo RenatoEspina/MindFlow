@@ -170,6 +170,35 @@ void menuCalendario(Estudiante estudiante) {
     } while (opcionCalendario != 4);
 }
 
+void seleccionarCurso(Estudiante estudiante)
+{
+    printf("-------Seleccionar Curso-------\n");
+    if(estudiante.cursos->size == 0) {
+        printf("No hay cursos registrados.\n");
+        return;
+    }
+    MapPair *par= map_first(estudiante.cursos);
+    int index=1;
+    while(par!=NULL)
+    {
+
+        Curso *curso = (Curso *)par->value;
+        printf("%d. Curso: %s\n",index,curso->nombre);
+        par= map_next(estudiante.cursos);
+        index++;
+    }
+    
+}
+
+void iniciarrepaso(Estudiante estudiante)
+{
+    printf("===== INICIAR REPASO =====\n");
+    seleccionarCurso(estudiante);
+
+
+}
+
+
 void menuprincipal(int *opcion) {
     printf("===== MENÚ PRINCIPAL =====\n");
     printf("1. Ver calendario\n");
@@ -180,7 +209,7 @@ void menuprincipal(int *opcion) {
     printf("Seleccione una opción: ");
     scanf("%d", opcion);
 }
-//Main
+
 int main(){
     int opcion;
     SetConsoleOutputCP(CP_UTF8);
@@ -209,7 +238,7 @@ int main(){
             //cursos(estudiante, yearActual);
             break;
         case 3:
-            //iniciarrepaso(estudiante, yearActual);
+            iniciarrepaso(estudiante);
             break;
     
         case 4:
