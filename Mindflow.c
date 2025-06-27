@@ -78,7 +78,10 @@ void imprimirEstudiante(const Estudiante *estudiante) {
     printf("=======================================\n");
 }
 //
+void calendario(Estudiante estudiante, int yearActual){
 
+    printf("Función de calendario no implementada aún.\n");
+}
 //Main
 int main(){
     int opcion;
@@ -100,22 +103,18 @@ int main(){
     switch (opcion)
     {
     case 1:
-        //calendario(estudiante, yearActual);
-    
+        calendario(estudiante, yearActual);
         break;
         
     case 2:
-        //agenda(estudiante, yearActual);
+        cursos(estudiante, yearActual);
         break;
     case 3:
-        //tarjetamemoria(estudiante, yearActual);
+        iniciarrepaso(estudiante, yearActual);
         break;
+   
     case 4:
-        //CalculadoradeNotas(estudiante, yearActual);
-        break;
-
-    case 5:
-        //printf("saliendo del programa...\n");
+        printf("saliendo del programa...\n");
         break;
 
     default:
