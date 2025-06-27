@@ -1,5 +1,7 @@
 #include "include.h"
-
+void seleccionarTipodePreguntas(Curso *curso);
+void repasoSecuencial(Curso *curso);
+void repasoAleatorio(Curso *curso);
 //FUNCION PARA DEBUGEAR
 void imprimirEstudiante(const Estudiante *estudiante) {
     printf("===== INFORMACIÓN DEL ESTUDIANTE =====\n");
@@ -217,10 +219,10 @@ void seleccionarTipodePreguntas(Curso *curso)
     {
         case 1:
 
-            repasosecuencial(curso);
+            repasoSecuencial(curso);
             break;
         case 2:
-            //repasoaleatorio(curso);
+            repasoAleatorio(curso);
             break;
         default:
             printf("Opción no válida. Por favor, intente de nuevo.\n");
