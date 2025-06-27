@@ -33,7 +33,7 @@ typedef struct Estudiante{
 typedef struct Agenda{
     char nombre[50]; //nombre del evento
     char descripcion[100]; //descripcion del evento
-    bool estado; //false= pendiente, true= realizado
+    char estado[20]; //estado del evento (pendiente, en progreso, completado)
 } Agenda;
 
 //Estructura relacionadas a los cursos
