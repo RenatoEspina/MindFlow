@@ -205,6 +205,31 @@ void seleccionarCurso(Estudiante estudiante)
     
 }
 
+void seleccionarTipodePreguntas(Curso *curso)
+{
+    int tipopregunta;
+    printf("-------Seleccionar Tipo de Preguntas-------\n");
+    printf("1. Preguntas de opción secuencial(orden agregada)\n");
+    printf("2. Preguntas de opción aleatoria\n");
+    printf("Seleccione el tipo de preguntas (número): ");
+    scanf("%d", &tipopregunta);
+    switch (tipopregunta)
+    {
+        case 1:
+
+            //repasosecuencial(curso);
+            break;
+        case 2:
+            //repasoaleatorio(curso);
+            break;
+        default:
+            printf("Opción no válida. Por favor, intente de nuevo.\n");
+            break;
+
+    }
+
+}
+
 void iniciarrepaso(Estudiante estudiante)
 {
     printf("===== INICIAR REPASO =====\n");
