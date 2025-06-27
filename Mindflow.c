@@ -305,7 +305,7 @@ void iniciarrepaso(Estudiante estudiante)
     printf("===== INICIAR REPASO =====\n");
     seleccionarCurso(estudiante);
 
-
+    presioneTeclaParaContinuar();
 }
 
 
@@ -336,8 +336,9 @@ int main(){
     leerNotas(&estudiante);
     imprimirEstudiante(&estudiante);
 
-    menuprincipal(&opcion);
     do{
+        limpiarPantalla();
+        menuprincipal(&opcion);
         switch (opcion)
         {
         case 1:
@@ -350,7 +351,6 @@ int main(){
         case 3:
             iniciarrepaso(estudiante);
             break;
-    
         case 4:
             printf("saliendo del programa...\n");
             break;
@@ -359,7 +359,6 @@ int main(){
             printf("Opción no válida. Por favor, intente de nuevo.\n");
             break;
         }
-        limpiarPantalla();
     }while(opcion != 4);
     return 0;
 }
