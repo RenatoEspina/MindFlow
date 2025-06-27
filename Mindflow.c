@@ -177,6 +177,7 @@ void seleccionarCurso(Estudiante estudiante)
     printf("-------Seleccionar Curso-------\n");
     if(estudiante.cursos->size == 0) {
         printf("No hay cursos registrados.\n");
+        presioneTeclaParaContinuar();
         return;
     }
     MapPair *par= map_first(estudiante.cursos);
@@ -300,6 +301,7 @@ void agregarRepaso(Estudiante *estudiante) {
 
     if (estudiante->cursos->size == 0) {
         printf("No hay cursos registrados.\n");
+        presioneTeclaParaContinuar();
         return;
     }
 
@@ -356,14 +358,15 @@ void agregarRepaso(Estudiante *estudiante) {
 
 void iniciarrepaso(Estudiante estudiante)
 {
-    printf("===== REPASO =====\n");
-    printf("1. Seleccionar curso\n");
-    printf("2. agregar preguntas al repaso de un curso\n");
-    printf("3. Volver al menú principal\n");
     int opcion;
-    printf("Seleccione una opción: ");
-    scanf("%d", &opcion);
     do{
+        limpiarPantalla();
+        printf("===== REPASO =====\n");
+        printf("1. Seleccionar curso\n");
+        printf("2. agregar preguntas al repaso de un curso\n");
+        printf("3. Volver al menú principal\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
     switch (opcion)
     {
         case 1:
@@ -383,6 +386,90 @@ void iniciarrepaso(Estudiante estudiante)
 
     presioneTeclaParaContinuar();
 }
+
+void crearCurso(Estudiante estudiante){
+    Curso* curso = malloc(sizeof(Curso));
+    inicializarCurso(curso, estudiante.cursos->size + 1);
+
+    printf("Ingrese el nombre del curso: ");
+    scanf("%s", curso->nombre);
+
+    map_insert(estudiante.cursos, curso->nombre, curso);
+
+    printf("Curso '%s' agregado\n", curso->nombre);
+    presioneTeclaParaContinuar();
+}
+
+void cursos(Estudiante estudiante) {
+    int opcion = 0;
+
+    if (estudiante.cursos->size == 0) {
+        printf("No hay cursos registrados.\n");
+        printf("1. Agregar curso nuevo\n");
+        printf("2. Volver\n");
+        printf("Seleccione opción: ");
+        scanf("%d", &opcion);
+        if (opcion == 1) crearCurso(estudiante);
+        return;
+    }
+
+    printf("===== Cursos disponibles =====\n");
+    int index = 1;
+    for (MapPair *p = map_first(estudiante.cursos); p != NULL; p = map_next(estudiante.cursos)) {
+        Curso *curso = p->value;
+        printf("%d. %s (ID: %d)\n", index, curso->nombre, curso->id);
+        index++;
+    }
+
+    printf("Seleccione número de curso: ");
+    int seleccion;
+    scanf("%d", &seleccion);
+
+    if (seleccion < 1 || seleccion >= index) {
+        printf("Selección inválida.\n");
+        return;
+    }
+
+    // Encontrar el curso elegido
+    index = 1;
+    MapPair *p = map_first(estudiante.cursos);
+    
+    while (p != NULL && index < seleccion) {
+        p = map_next(estudiante.cursos);
+        index++;
+    }
+
+    if (p == NULL) {
+        printf("Curso no encontrado.\n");
+        return;
+    }
+
+    Curso *cursoSeleccionado = p->value;
+
+    do {
+        printf("\n===== Curso: %s =====\n", cursoSeleccionado->nombre);
+        printf("1. Modificar notas\n");
+        printf("2. Calcular promedio\n");
+        printf("3. Volver\n");
+        printf("Seleccione opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                //agregarNota(cursoSeleccionado);
+                break;
+            case 2:
+                //calcularPromedio(cursoSeleccionado);
+                break;
+            case 3:
+                printf("Volviendo...\n");
+                break;
+            default:
+                printf("Opción inválida.\n");
+        }
+    } while (opcion != 3);
+}
+
 void menuprincipal(int *opcion) {
     printf("===== MENÚ PRINCIPAL =====\n");
     printf("1. Ver calendario\n");
@@ -423,7 +510,7 @@ int main(){
             break;
             
         case 2:
-            //cursos(estudiante, yearActual);
+            cursos(estudiante);
             break;
         case 3:
             iniciarrepaso(estudiante);
