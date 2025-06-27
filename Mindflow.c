@@ -78,10 +78,113 @@ void imprimirEstudiante(const Estudiante *estudiante) {
     printf("=======================================\n");
 }
 //
-void calendario(Estudiante estudiante, int yearActual){
 
-    printf("Función de calendario no implementada aún.\n");
+
+
+
+
+void mostrarCalendarioMensual(Estudiante estudiante, int mesSeleccionado) {
+    printf("===== CALENDARIO - MES: %s =====\n", estudiante.meses[mesSeleccionado].nombre);
+    
+    for (int d = 0; d < 31; d++) {
+        if (estudiante.meses[mesSeleccionado].dias[d].numero == 0) continue; // Día no válido
+        
+        printf("Día %2d: ", estudiante.meses[mesSeleccionado].dias[d].numero);
+        bool hayEventos = false;
+        
+        if (estudiante.meses[mesSeleccionado].dias[d].relevante[0]) { printf("[Examen] "); hayEventos = true; }
+        if (estudiante.meses[mesSeleccionado].dias[d].relevante[1]) { printf("[Control] "); hayEventos = true; }
+        if (estudiante.meses[mesSeleccionado].dias[d].relevante[2]) { printf("[Trabajo] "); hayEventos = true; }
+        if (!hayEventos) printf("(sin eventos relevantes)");
+        
+        printf("\n");
+    }
+    printf("============================\n");
 }
+
+void mostrarCalendarioDiario(Estudiante estudiante, int mesSeleccionado, int diaSeleccionado) {
+    printf("===== CALENDARIO - Día: %d de %s =====\n", estudiante.meses[mesSeleccionado].dias[diaSeleccionado].numero, estudiante.meses[mesSeleccionado].nombre);
+    
+    List *agenda = estudiante.meses[mesSeleccionado].dias[diaSeleccionado].agenda;
+    Agenda *a = list_first(agenda);
+    
+    if (a == NULL) {
+        printf("No hay eventos para este día.\n");
+    } else {
+        while (a != NULL) {
+            printf("  - Evento: %s\n    Descripción: %s\n    Estado: %s\n", a->nombre, a->descripcion, a->estado ? "Realizado" : "Pendiente");
+            a = list_next(agenda);
+        }
+    }
+    printf("============================\n");
+}
+
+void menuCalendario(Estudiante estudiante) {
+    int opcionCalendario;
+    int tipoVista = 0; // 0 = mensual, 1 = diario
+    int mesSeleccionado, diaSeleccionado;
+
+    do {
+        printf("===== MENÚ CALENDARIO =====\n");
+        printf("1. Ver calendario mensual\n");
+        printf("2. Ver calendario diario\n");
+        printf("3. Agregar curso al calendario\n");
+        printf("4. Eliminar curso del calendario\n");
+        printf("5. Cambiar visualización (mensual / diaria)\n");
+        printf("6. Volver\n");
+        printf("\nSeleccione una opción: ");
+        scanf("%d", &opcionCalendario);
+
+        switch (opcionCalendario) {
+            case 1:
+                if (tipoVista == 0) {
+                    printf("Seleccione el mes (1-12): ");
+                    scanf("%d", &mesSeleccionado);
+                    mesSeleccionado--; // Ajuste de índice (mes 1 es mes 0 en la estructura)
+                    mostrarCalendarioMensual(estudiante, mesSeleccionado);
+                }
+                break;
+            
+            case 2:
+                if (tipoVista == 1) {
+                    printf("Seleccione el mes (1-12): ");
+                    scanf("%d", &mesSeleccionado);
+                    mesSeleccionado--; // Ajuste de índice (mes 1 es mes 0 en la estructura)
+                    printf("Seleccione el día (1-31): ");
+                    scanf("%d", &diaSeleccionado);
+                    diaSeleccionado--; // Ajuste de índice (día 1 es día 0 en la estructura)
+                    mostrarCalendarioDiario(estudiante, mesSeleccionado, diaSeleccionado);
+                }
+                break;
+
+            case 3:
+                // Agregar curso (suponiendo que se añade a los días del calendario)
+                printf("Seleccione el curso a agregar: ");
+                // Lógica de agregar curso al calendario aquí
+                break;
+
+            case 4:
+                // Eliminar curso (suponiendo que se elimina de los días del calendario)
+                printf("Seleccione el curso a eliminar: ");
+                // Lógica de eliminar curso del calendario aquí
+                break;
+
+            case 5:
+                tipoVista = (tipoVista == 0) ? 1 : 0; // Cambiar entre mensual y diario
+                printf("Visualización cambiada a %s\n", (tipoVista == 0) ? "mensual" : "diaria");
+                break;
+
+            case 6:
+                printf("Volviendo al menú principal...\n");
+                break;
+
+            default:
+                printf("Opción no válida. Intente de nuevo.\n");
+                break;
+        }
+    } while (opcionCalendario != 6);
+}
+
 void menuprincipal(int *opcion) {
     printf("===== MENÚ PRINCIPAL =====\n");
     printf("1. Ver calendario\n");
@@ -90,7 +193,7 @@ void menuprincipal(int *opcion) {
     printf("4. Salir\n");
     printf("\n");
     printf("Seleccione una opción: ");
-    scanf("%d", &opcion);
+    scanf("%d", opcion);
 }
 //Main
 int main(){
@@ -113,7 +216,7 @@ int main(){
     switch (opcion)
     {
     case 1:
-        //calendario(estudiante, yearActual);
+        menuCalendario(estudiante);
         break;
         
     case 2:
