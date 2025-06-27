@@ -128,10 +128,8 @@ void menuCalendario(Estudiante estudiante) {
         printf("===== MENÚ CALENDARIO =====\n");
         printf("1. Ver calendario mensual\n");
         printf("2. Ver calendario diario\n");
-        printf("3. Agregar curso al calendario\n");
-        printf("4. Eliminar curso del calendario\n");
-        printf("5. Cambiar visualización (mensual / diaria)\n");
-        printf("6. Volver\n");
+        printf("3. Cambiar visualización (mensual / diaria)\n");
+        printf("4. Volver\n");
         printf("\nSeleccione una opción: ");
         scanf("%d", &opcionCalendario);
 
@@ -149,32 +147,19 @@ void menuCalendario(Estudiante estudiante) {
                 if (tipoVista == 1) {
                     printf("Seleccione el mes (1-12): ");
                     scanf("%d", &mesSeleccionado);
-                    mesSeleccionado--; // Ajuste de índice (mes 1 es mes 0 en la estructura)
+                    mesSeleccionado--; 
                     printf("Seleccione el día (1-31): ");
                     scanf("%d", &diaSeleccionado);
-                    diaSeleccionado--; // Ajuste de índice (día 1 es día 0 en la estructura)
+                    diaSeleccionado--; 
                     mostrarCalendarioDiario(estudiante, mesSeleccionado, diaSeleccionado);
                 }
                 break;
-
             case 3:
-                // Agregar curso (suponiendo que se añade a los días del calendario)
-                printf("Seleccione el curso a agregar: ");
-                // Lógica de agregar curso al calendario aquí
-                break;
-
-            case 4:
-                // Eliminar curso (suponiendo que se elimina de los días del calendario)
-                printf("Seleccione el curso a eliminar: ");
-                // Lógica de eliminar curso del calendario aquí
-                break;
-
-            case 5:
                 tipoVista = (tipoVista == 0) ? 1 : 0; // Cambiar entre mensual y diario
                 printf("Visualización cambiada a %s\n", (tipoVista == 0) ? "mensual" : "diaria");
                 break;
 
-            case 6:
+            case 4:
                 printf("Volviendo al menú principal...\n");
                 break;
 
