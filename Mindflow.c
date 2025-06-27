@@ -295,7 +295,63 @@ void repasoAleatorio(Curso *curso)
     }
 }
 
+void agregarRepaso(Estudiante *estudiante) {
+    printf("===== Agregar Repaso =====\n");
 
+    if (estudiante->cursos->size == 0) {
+        printf("No hay cursos registrados.\n");
+        return;
+    }
+
+   
+    printf("Seleccione el curso al que desea agregar un repaso:\n");
+    MapPair *par = map_first(estudiante->cursos);
+    int index = 1;
+    while (par != NULL) {
+        Curso *curso = (Curso *)par->value;
+        printf("%d. Curso: %s\n", index, curso->nombre);
+        par = map_next(estudiante->cursos);
+        index++;
+    }
+
+    int opcionCurso;
+    printf("Seleccione un curso (número): ");
+    scanf("%d", &opcionCurso);
+
+    par = map_first(estudiante->cursos);
+    for (int i = 1; i < opcionCurso && par != NULL; i++) {
+        par = map_next(estudiante->cursos);
+    }
+    
+    if (par == NULL) {
+        printf("Curso no encontrado.\n");
+        return;
+    }
+
+    Curso *cursoSeleccionado = (Curso *)par->value;
+    printf("Curso seleccionado: %s\n", cursoSeleccionado->nombre);
+
+
+    Repaso *nuevoRepaso = malloc(sizeof(Repaso));
+    printf("Ingrese el ID del repaso: ");
+    scanf("%d", &nuevoRepaso->id);
+    printf("Ingrese la puntuación promedio: ");
+    scanf("%d", &nuevoRepaso->puntuacionPromedio);
+    printf("Ingrese la puntuación promedio anterior: ");
+    scanf("%d", &nuevoRepaso->puntuacionPromedioAnterior);
+    
+
+    nuevoRepaso->preguntas = NULL;
+    nuevoRepaso->cantidadPreguntas = 0;
+
+
+    if (cursoSeleccionado->repaso == NULL) {
+        cursoSeleccionado->repaso = list_create();
+    }
+    list_pushBack(cursoSeleccionado->repaso, nuevoRepaso);
+    
+    printf("Repaso agregado exitosamente al curso %s.\n", cursoSeleccionado->nombre);
+}
 
 
 void iniciarrepaso(Estudiante estudiante)
@@ -314,7 +370,7 @@ void iniciarrepaso(Estudiante estudiante)
             seleccionarCurso(estudiante);
             break;
         case 2:
-            //agregarPreguntasRepaso(estudiante);
+            agregarRepaso(&estudiante);
             break;
         case 3:
             printf("Volviendo al menú principal...\n");
