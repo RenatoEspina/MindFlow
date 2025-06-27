@@ -187,6 +187,21 @@ void seleccionarCurso(Estudiante estudiante)
         par= map_next(estudiante.cursos);
         index++;
     }
+    int opcionCurso;
+    printf("Seleccione el curso (número): ");
+    scanf("%d", &opcionCurso);
+    par= map_first(estudiante.cursos);
+    for(int i=1; i<opcionCurso && par!=NULL;i++)
+    {
+        par= map_next(estudiante.cursos);
+    }
+    if(par == NULL) {
+        printf("Curso no encontrado.\n");
+        return;
+    }
+    Curso *cursoSeleccionado = (Curso *)par->value;
+    printf("Curso seleccionado: %s\n", cursoSeleccionado->nombre);
+    seleccionarTipodePreguntas(cursoSeleccionado);
     
 }
 
