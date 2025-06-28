@@ -5,86 +5,6 @@ void menuCalendario(Estudiante estudiante);
 void seleccionarTipodePreguntas(Curso *curso);
 void iniciarrepaso(Estudiante estudiante);
 
-//FUNCION PARA DEBUGEAR
-void imprimirEstudiante(const Estudiante *estudiante) {
-    printf("===== INFORMACIÓN DEL ESTUDIANTE =====\n");
-
-    // Imprimir cursos
-    printf("\nCursos registrados:\n");
-    if (estudiante->cursos->size == 0) {
-        printf("  (Ningún curso registrado aún)\n");
-    } else {
-        MapPair *par = map_first(estudiante->cursos);
-        while (par != NULL) {
-            Curso *curso = (Curso *)par->value;
-            printf("  - Curso ID: %d, Nombre: %s\n", curso->id, curso->nombre);
-
-            // Notas
-            printf("    Notas:\n");
-            List *notas = curso->notas;
-            if (list_size(notas) == 0) {
-                printf("      (Sin notas registradas)\n");
-            } else {
-                Nota *n = list_first(notas);
-                while (n != NULL) {
-                    printf("      Nota: %d, Ponderación: %.2f\n", n->nota, n->ponderacion);
-                    n = list_next(notas);
-                }
-            }
-
-            // Repasos
-            printf("    Repasos:\n");
-            List *repasos = curso->repaso;
-            if (list_size(repasos) == 0) {
-                printf("      (Sin repasos registrados)\n");
-            } else {
-                Repaso *r = list_first(repasos);
-                while (r != NULL) {
-                    printf("      Repaso ID: %d (Puntaje Actual: %d, Anterior: %d)\n",
-                           r->id, r->puntuacionPromedio, r->puntuacionPromedioAnterior);
-
-                    // Recorrer arreglo de preguntas
-                    for (int i = 0; i < r->cantidadPreguntas; i++) {
-                        Pregunta *p = r->preguntas[i];
-                        printf("        Pregunta: %s\n", p->pregunta);
-                        printf("        Respuesta: %s\n", p->respuesta);
-                        printf("        Puntuación: %d\n", p->puntuacion);
-                    }
-                    r = list_next(repasos);
-                }
-            }
-            par = map_next(estudiante->cursos);
-        }
-    }
-
-    // Imprimir calendario
-    printf("\nCalendario:\n");
-    for (int i = 0; i < 12; i++) {
-        Mes mes = estudiante->meses[i];
-        printf("  Mes: %s (%d)\n", mes.nombre, mes.numero);
-        for (int d = 0; d < 31; d++) {
-            if (mes.dias[d].numero == 0) continue; // día no válido
-            printf("    Día %2d: ", mes.dias[d].numero);
-            bool hayAlgo = false;
-            if (mes.dias[d].relevante[0]) { printf("[Examen] "); hayAlgo = true; }
-            if (mes.dias[d].relevante[1]) { printf("[Control] "); hayAlgo = true; }
-            if (mes.dias[d].relevante[2]) { printf("[Trabajo] "); hayAlgo = true; }
-            if (!hayAlgo) printf("(sin eventos relevantes)");
-            printf("\n");
-
-            List *agenda = mes.dias[d].agenda;
-            Agenda *a = list_first(agenda);
-            while (a != NULL) {
-                printf("      - Evento: %s\n        Descripción: %s\n        Estado: %s\n", a->nombre, a->descripcion, a->estado ? "Realizado" : "Pendiente");
-                printf("examen: %d, control: %d, trabajo: %d\n", mes.dias[d].relevante[0], mes.dias[d].relevante[1], mes.dias[d].relevante[2]);
-                a = list_next(agenda);
-            }
-        }
-    }
-    printf("=======================================\n");
-}
-
-
 void mostrarCalendarioMensual(Estudiante estudiante, int mesSeleccionado) {
     printf("===== CALENDARIO - MES: %s =====\n", estudiante.meses[mesSeleccionado].nombre);
     
@@ -172,6 +92,7 @@ void menuCalendario(Estudiante estudiante) {
 
 void seleccionarCurso(Estudiante estudiante)
 {
+    limpiarPantalla();
     printf("-------Seleccionar Curso-------\n");
     if(estudiante.cursos->size == 0) {
         printf("No hay cursos registrados.\n");
@@ -208,10 +129,12 @@ void seleccionarCurso(Estudiante estudiante)
 
 void seleccionarTipodePreguntas(Curso *curso)
 {
+    limpiarPantalla();
     int tipopregunta;
     printf("-------Seleccionar Tipo de Preguntas-------\n");
     printf("1. Preguntas de opción secuencial(orden agregada)\n");
     printf("2. Preguntas de opción aleatoria\n");
+    puts("3. Volver");
     printf("Seleccione el tipo de preguntas (número): ");
     scanf("%d", &tipopregunta);
     switch (tipopregunta)
@@ -222,43 +145,64 @@ void seleccionarTipodePreguntas(Curso *curso)
         case 2:
             repasoAleatorio(curso);
             break;
+        case 3:
+            puts("Volviendo a elegir el curso");
+            break;
         default:
             printf("Opción no válida. Por favor, intente de nuevo.\n");
             break;
     }
-
+    presioneTeclaParaContinuar();
 }
 
-void repasoSecuencial(Curso *curso)
-{
+void repasoSecuencial(Curso *curso) {
+    limpiarPantalla();
     printf("===== REPASO SECUENCIAL =====\n");
 
-    // Asegúrate de que el curso tiene repasos y preguntas
     if (curso->repaso == NULL || list_size(curso->repaso) == 0) {
         printf("No hay repasos registrados para este curso.\n");
         return;
     }
 
-    // Tomamos el primer repaso del curso (si es secuencial)
     Repaso *repaso = list_first(curso->repaso);
-
     if (repaso == NULL || repaso->cantidadPreguntas == 0) {
         printf("Este repaso no tiene preguntas registradas.\n");
         return;
     }
 
-    // Mostrar preguntas en orden secuencial
+    int sumaPuntaje = 0;
+
     for (int i = 0; i < repaso->cantidadPreguntas; i++) {
         Pregunta *p = repaso->preguntas[i];
+        char respuestaUsuario[100];
         printf("Pregunta %d: %s\n", i + 1, p->pregunta);
-        printf("Respuesta: %s\n", p->respuesta);
-        printf("Puntuación: %d\n", p->puntuacion);
+        printf("Tu respuesta: ");
+        scanf(" %[^\n]", respuestaUsuario);
+
+        printf("Respuesta esperada: %s\n", p->respuesta);
+        printf("Evalúa tu respuesta (0-100): ¿Qué tan correcto crees que estuviste?: ");
+        int evaluacion = 0;
+        scanf("%d", &evaluacion);
+        if (evaluacion < 0) evaluacion = 0;
+        if (evaluacion > 100) evaluacion = 100;
+
+        p->puntuacion = evaluacion;  // Puedes guardar como último puntaje individual
+        sumaPuntaje += evaluacion;
+
+        printf("Guardado puntaje: %d\n", evaluacion);
         printf("===========================\n");
     }
+
+    repaso->puntuacionPromedioAnterior = repaso->puntuacionPromedio;
+    repaso->puntuacionPromedio = sumaPuntaje / repaso->cantidadPreguntas;
+
+    printf("Tu puntaje promedio en este repaso: %d%%\n", repaso->puntuacionPromedio);
+    printf("Puntaje promedio anterior: %d%%\n", repaso->puntuacionPromedioAnterior);
 }
 
 void repasoAleatorio(Curso *curso)
 {
+    limpiarPantalla();
     printf("===== REPASO ALEATORIO =====\n");
 
     // Verificar si el curso tiene repasos y preguntas
@@ -284,17 +228,41 @@ void repasoAleatorio(Curso *curso)
         repaso->preguntas[j] = temp;
     }
 
-    // Mostrar las preguntas en orden aleatorio
+    int sumaPuntaje = 0;
+
     for (int i = 0; i < repaso->cantidadPreguntas; i++) {
         Pregunta *p = repaso->preguntas[i];
         printf("Pregunta %d: %s\n", i + 1, p->pregunta);
-        printf("Respuesta: %s\n", p->respuesta);
-        printf("Puntuación: %d\n", p->puntuacion);
+
+        char respuestaUsuario[200];
+        printf("Tu respuesta: ");
+        scanf(" %[^\n]s", respuestaUsuario);
+
+        printf("Respuesta correcta: %s\n", p->respuesta);
+
+        int puntaje = 0;
+        printf("¿Qué puntaje te das para esta pregunta? (0 a 100): ");
+        scanf("%d", &puntaje);
+        if (puntaje < 0) puntaje = 0;
+        if (puntaje > 100) puntaje = 100;
+
+        p->puntuacion = puntaje;
+        sumaPuntaje += puntaje;
+
         printf("===========================\n");
     }
+
+    repaso->puntuacionPromedioAnterior = repaso->puntuacionPromedio;
+    repaso->puntuacionPromedio = sumaPuntaje / repaso->cantidadPreguntas;
+
+    printf("Puntaje promedio de este repaso: %d (anterior: %d)\n",
+           repaso->puntuacionPromedio, repaso->puntuacionPromedioAnterior);
+
+    presioneTeclaParaContinuar();
 }
 
 void agregarRepaso(Estudiante *estudiante) {
+    limpiarPantalla();
     printf("===== Agregar Repaso =====\n");
 
     if (estudiante->cursos->size == 0) {
@@ -331,32 +299,76 @@ void agregarRepaso(Estudiante *estudiante) {
     Curso *cursoSeleccionado = (Curso *)par->value;
     printf("Curso seleccionado: %s\n", cursoSeleccionado->nombre);
 
-
     Repaso *nuevoRepaso = malloc(sizeof(Repaso));
-    printf("Ingrese el ID del repaso: ");
-    scanf("%d", &nuevoRepaso->id);
-    printf("Ingrese la puntuación promedio: ");
-    scanf("%d", &nuevoRepaso->puntuacionPromedio);
-    printf("Ingrese la puntuación promedio anterior: ");
-    scanf("%d", &nuevoRepaso->puntuacionPromedioAnterior);
-    
 
-    nuevoRepaso->preguntas = NULL;
-    nuevoRepaso->cantidadPreguntas = 0;
-
-
+    // ID generado automáticamente
     if (cursoSeleccionado->repaso == NULL) {
         cursoSeleccionado->repaso = list_create();
     }
+    nuevoRepaso->id = list_size(cursoSeleccionado->repaso) + 1;
+
+    nuevoRepaso->puntuacionPromedio = 0;
+    nuevoRepaso->puntuacionPromedioAnterior = 0;
+
+    int cantidadPreguntas = 0;
+    printf("¿Cuántas preguntas tendrá este repaso? ");
+    scanf("%d", &cantidadPreguntas);
+
+    nuevoRepaso->preguntas = malloc(sizeof(Pregunta*) * cantidadPreguntas);
+    nuevoRepaso->cantidadPreguntas = cantidadPreguntas;
+
+    for (int i = 0; i < cantidadPreguntas; i++) {
+        Pregunta *pregunta = malloc(sizeof(Pregunta));
+        printf("Pregunta %d: ", i + 1);
+        scanf(" %[^\n]s", pregunta->pregunta);
+
+        printf("Respuesta correcta: ");
+        scanf(" %[^\n]s", pregunta->respuesta);
+
+        pregunta->puntuacion = 0; // se asignará cuando se haga el repaso
+        nuevoRepaso->preguntas[i] = pregunta;
+    }
+
     list_pushBack(cursoSeleccionado->repaso, nuevoRepaso);
-    
-    printf("Repaso agregado exitosamente al curso %s.\n", cursoSeleccionado->nombre);
+
+    printf("Repaso #%d agregado al curso %s con %d preguntas.\n",
+           nuevoRepaso->id, cursoSeleccionado->nombre, cantidadPreguntas);
+
+    presioneTeclaParaContinuar();
 }
 
+void crearCurso(Estudiante estudiante){
+    Curso* curso = malloc(sizeof(Curso));
+    inicializarCurso(curso, estudiante.cursos->size + 1);
+
+    printf("Ingrese el nombre del curso: ");
+    scanf("%s", curso->nombre);
+
+    map_insert(estudiante.cursos, curso->nombre, curso);
+
+    printf("Curso '%s' agregado\n", curso->nombre);
+    presioneTeclaParaContinuar();
+}
 
 void iniciarrepaso(Estudiante estudiante)
 {
+    limpiarPantalla();
     int opcion;
+    if (estudiante.cursos->size == 0) {
+        printf("No hay cursos registrados.\n");
+        printf("1. Agregar curso nuevo\n");
+        printf("2. Volver\n");
+        printf("Seleccione opción: ");
+        scanf("%d", &opcion);
+        if (opcion == 1) crearCurso(estudiante);
+        return;
+    }
+    printf("===== Cursos disponibles =====\n");
+    for (MapPair *p = map_first(estudiante.cursos); p != NULL; p = map_next(estudiante.cursos)) {
+        Curso *curso = p->value;
+        printf(" %s (ID: %d)\n", curso->nombre, curso->id);
+    }
+
     do{
         limpiarPantalla();
         printf("===== REPASO =====\n");
@@ -382,19 +394,6 @@ void iniciarrepaso(Estudiante estudiante)
     }
     } while(opcion != 3);
 
-    presioneTeclaParaContinuar();
-}
-
-void crearCurso(Estudiante estudiante){
-    Curso* curso = malloc(sizeof(Curso));
-    inicializarCurso(curso, estudiante.cursos->size + 1);
-
-    printf("Ingrese el nombre del curso: ");
-    scanf("%s", curso->nombre);
-
-    map_insert(estudiante.cursos, curso->nombre, curso);
-
-    printf("Curso '%s' agregado\n", curso->nombre);
     presioneTeclaParaContinuar();
 }
 
@@ -618,7 +617,9 @@ void menuprincipal(int *opcion) {
     printf("Seleccione una opción: ");
     scanf("%d", opcion);
 }
+
 int main(){
+    srand(time(NULL));
     int opcion;
     SetConsoleOutputCP(CP_UTF8);
     comprobarExistenciaArchivo();
@@ -634,9 +635,6 @@ int main(){
     leerRepaso(&estudiante);
     leerPreguntas(&estudiante);
     leerNotas(&estudiante);
-    //imprimirEstudiante(&estudiante);
-    
-   
 
     do{
         limpiarPantalla();
@@ -662,6 +660,7 @@ int main(){
             break;
         }
     }while(opcion != 4);
+    
     escribirAgenda(&estudiante);
     escribirCursos(&estudiante);
     escribirRepasos(&estudiante);
