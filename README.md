@@ -62,3 +62,13 @@
 
  - Submenú Salir: Sale del programa y lo cierra.
  
+### CONTRIBUCIÓN INDIVIDUAL ###
+Este proyecto fue desarrollado de manera colaborativa por un equipo de cuatro integrantes, donde cada uno asumió roles específicos que permitieron complementar el desarrollo tanto a nivel estructural como funcional y visual de la aplicación.
+
+- Renato Espina: Diseñó la base del proyecto, estableciendo la estructura general del código y proponiendo las primeras definiciones de los Tipos Abstractos de Datos (TDA).
+
+- Andres Miranda: Encargado del desarrollo e implementación de la Calculadora de Notas, incluyendo el diseño del submenú, ingreso de datos, cálculo de promedios simples y ponderados. Colaboró en pruebas de funcionamiento general y en la detección de errores lógicos en distintas funcionalidades.
+
+- Felipe Silva (Your Name): Desarrolló el menú principal de la aplicación, estableciendo la navegación general entre las distintas funcionalidades. Se encargó de la mejora estética de la interfaz textual, ordenando visualmente la distribución de las opciones y mensajes. Desarrolló la funcionalidad para iniciar un repaso, integrando la lógica de flashcards (tarjetas de memoria) y el modo de estudio aleatorio o secuencial. Encargado de diseñar la interfaz de los submenús "Ver cursos" y "Repaso", con navegación intuitiva y retorno al menú principal.
+
+- Martina Valenzuela: Participó activamente en la redacción del README y en la documentación general del proyecto, asegurando claridad y comprensión para usuarios y evaluadores. Colaboró en pruebas integrales del sistema y en la propuesta de mejoras para la interfaz de usuario y flujo general.
