@@ -40,6 +40,8 @@
 
 *** Problemas conocidos ***
  Si el usuario ingresa caracteres no válidos (como letras donde se esperan números), el programa puede comportarse de forma inesperada o cerrarse abruptamente.
+ Si se agregar muchas preguntas el programa tiene fallas inesperadas.
+ Al momento de bajar por la terminar hay fallas con los print y las funciones de mostrar.
 
 *** A mejorar ***
  - Validación robusta de entradas del usuario.
