@@ -146,15 +146,14 @@ void menuCalendario(Estudiante estudiante) {
                 break;
             
             case 2:
-                if (tipoVista == 1) {
-                    printf("Seleccione el mes (1-12): ");
-                    scanf("%d", &mesSeleccionado);
-                    mesSeleccionado--; 
-                    printf("Seleccione el día (1-31): ");
-                    scanf("%d", &diaSeleccionado);
-                    diaSeleccionado--; 
-                    mostrarCalendarioDiario(estudiante, mesSeleccionado, diaSeleccionado);
-                }
+                printf("Seleccione el mes (1-12): ");
+                scanf("%d", &mesSeleccionado);
+                mesSeleccionado--; 
+                printf("Seleccione el día (1-31): ");
+                scanf("%d", &diaSeleccionado);
+                diaSeleccionado--; 
+                mostrarCalendarioDiario(estudiante, mesSeleccionado, diaSeleccionado);
+                
                 break;
             case 3:
                 tipoVista = (tipoVista == 0) ? 1 : 0; // Cambiar entre mensual y diario
