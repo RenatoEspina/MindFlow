@@ -400,7 +400,142 @@ void crearCurso(Estudiante estudiante){
     presioneTeclaParaContinuar();
 }
 
+void calcularRestante(float suma, float sumaPonderacion){
+    float notaExencion;
+    int resultado;
+
+    do {
+        printf("Ingrese la nota de exención(ejemplo: 1.0 - 7.0): ");
+        resultado = scanf("%f", &notaExencion);
+        while (getchar() != '\n'); // limpiar ENTER extra
+
+        if (resultado != 1 || notaExencion < 1.0 || notaExencion > 7.0) {
+            printf("Entrada inválida. Por favor ingrese un número decimal válido entre 1.0 y 7.0.\n");
+        }
+    } while (resultado != 1 || notaExencion < 1.0 || notaExencion > 7.0);
+    float PromedioExencion = (notaExencion * 100.0 - suma) / 100.0 - sumaPonderacion;
+    printf("Necesitas: %.2f\n", PromedioExencion);
+    presioneTeclaParaContinuar();
+}
+
+void eliminarNota(Curso *curso) {
+    if (list_size(curso->notas) == 0) {
+        printf("No hay notas registradas.\n");
+        return;
+    }
+
+    printf("Notas actuales:\n");
+    int index = 0;
+    for (Nota* n = list_first(curso->notas); n != NULL; n = list_next(curso->notas)) {
+        printf("%d) Nota: %.1f, Ponderación: %.2f\n", index,(float)n->nota, n->ponderacion);
+        index++;
+    }
+
+    printf("Ingrese el número de la nota a eliminar: ");
+    int eliminarIndex;
+    scanf("%d", &eliminarIndex);
+
+    if (eliminarIndex < 0 || eliminarIndex >= list_size(curso->notas)) {
+        printf("Índice inválido.\n");
+        presioneTeclaParaContinuar();
+        return;
+    }
+
+    // Recorremos para llegar a esa posición
+    int i = 0;
+    Nota *n = list_first(curso->notas);
+    while (i < eliminarIndex && n != NULL) {
+        n = list_next(curso->notas);
+        i++;
+    }
+
+    if (n != NULL) {
+        list_popCurrent(curso->notas); // Elimina la nota actual
+        free(n); // Libera la memoria de la Nota
+        printf("Nota eliminada correctamente.\n");
+    } else {
+        printf("No se pudo eliminar.\n");
+    }
+}
+
+void agregarNota(Curso *curso){
+    Nota *nota = malloc(sizeof(Nota));
+    float notaActual;
+    int resultado;
+    do{
+        printf("Ingrese la nota(Ejemplo 1.0 - 7.0): ");
+        resultado = scanf("%f", &notaActual);
+        while (getchar() != '\n'); // Limpiar el buffer
+
+        if(resultado != 1 || notaActual < 1.0 || notaActual > 7.0){
+            printf("Entrada inválida. Por favor ingrese un número decimal válido entre 1.0 y 7.0.\n");
+        }
+    }while(resultado != 1 || notaActual < 1.0 || notaActual > 7.0);
+
+    nota->nota = notaActual;
+
+    printf("\nIngrese la ponderación(Ejemplo 0 - 100): ");
+    scanf("%f", &nota->ponderacion);
+    list_pushBack(curso->notas, nota);
+    puts("\nNota agregada.");
+}
+
+void Modifica(Curso *curso) {
+    int opcion;
+    limpiarPantalla();
+    puts("Que quieres hacer?");
+    puts("1) Agregar nota");
+    puts("2) Eliminar nota");
+    printf("Ingrese su opción: ");
+    scanf("%d", &opcion);
+    switch (opcion)
+    {
+    case 1:
+        agregarNota(curso);
+        break;
+    case 2:
+        eliminarNota(curso);
+        break;
+    default:
+        break;
+    }
+    presioneTeclaParaContinuar();
+}
+
+void calcularPromedio(Curso *curso){
+    limpiarPantalla();
+    if(list_size(curso->notas) == 0){
+        puts("Este curso no tiene notas registradas.");
+        return;
+    }
+    float suma = 0.0;
+    float sumaPonderacion = 0.0;
+
+    printf("===== Notas del curso %s =====\n", curso->nombre);
+    for(Nota *n = list_first(curso->notas); n != NULL ; n = list_next(curso->notas)){
+        printf("Nota: %.1f| Ponderación: %.2f\n", (float)n->nota, n->ponderacion);
+        suma += n->nota * n->ponderacion;
+        sumaPonderacion += n->ponderacion;
+    }
+    float promedio = (suma / sumaPonderacion);
+    printf("En %s tienes un %.2f de promedio\n", curso->nombre, promedio);
+    if(sumaPonderacion < 100.0){
+        int opcion;
+        puts("¿Quieres saber tu nota faltante?");
+        puts("1) Calcular");
+        puts("2) volver");
+        scanf("%d", &opcion);
+        if(opcion == 1){
+            calcularRestante(suma, sumaPonderacion);
+        } else if(opcion == 2){
+            puts("volviendo a menuCurso");
+            presioneTeclaParaContinuar();
+        }
+    }
+}
+
 void cursos(Estudiante estudiante) {
+    limpiarPantalla();
     int opcion = 0;
 
     if (estudiante.cursos->size == 0) {
@@ -447,7 +582,12 @@ void cursos(Estudiante estudiante) {
     Curso *cursoSeleccionado = p->value;
 
     do {
+        limpiarPantalla();
         printf("\n===== Curso: %s =====\n", cursoSeleccionado->nombre);
+        printf("  Notas Ponderación:\n");
+        for(Nota* n = list_first(cursoSeleccionado->notas); n != NULL ; n = list_next(cursoSeleccionado->notas)){
+            printf("   %.1f - %f \n", (float)n->nota, n->ponderacion);
+        }
         printf("1. Modificar notas\n");
         printf("2. Calcular promedio\n");
         printf("3. Volver\n");
@@ -456,10 +596,10 @@ void cursos(Estudiante estudiante) {
 
         switch (opcion) {
             case 1:
-                //agregarNota(cursoSeleccionado);
+                Modifica(cursoSeleccionado);
                 break;
             case 2:
-                //calcularPromedio(cursoSeleccionado);
+                calcularPromedio(cursoSeleccionado);
                 break;
             case 3:
                 printf("Volviendo...\n");
