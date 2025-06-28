@@ -137,12 +137,11 @@ void menuCalendario(Estudiante estudiante) {
 
         switch (opcionCalendario) {
             case 1:
-                if (tipoVista == 0) {
-                    printf("Seleccione el mes (1-12): ");
-                    scanf("%d", &mesSeleccionado);
-                    mesSeleccionado--; // Ajuste de índice (mes 1 es mes 0 en la estructura)
-                    mostrarCalendarioMensual(estudiante, mesSeleccionado);
-                }
+                printf("Seleccione el mes (1-12): ");
+                scanf("%d", &mesSeleccionado);
+                mesSeleccionado--; // Ajuste de índice (mes 1 es mes 0 en la estructura)
+                mostrarCalendarioMensual(estudiante, mesSeleccionado);
+                
                 break;
             
             case 2:
